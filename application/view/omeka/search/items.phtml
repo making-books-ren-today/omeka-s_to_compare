@@ -1,13 +1,18 @@
-<h1><?php echo $this->setting('installation_title', 'Omeka S'); ?></h1>
+<?php $fulltextSearch = $this->params()->fromQuery('fulltext_search'); ?>
+
+<h1><?php echo $this->hyperlink($this->setting('installation_title', 'Omeka S'), $this->url('top', ['action' => 'index'])); ?></h1>
 
 <?php echo $this->partial(
   'omeka/search/form.phtml',
-  ['fulltextSearch' => $this->escapeHtml($this->params()->fromQuery('fulltext_search'))]
+  [
+      'fulltextSearch' => $this->escapeHtml($this->params()->fromQuery('fulltext_search')),
+      'submitLabel' => $this->translate('Search items')
+  ]
 ); ?>
 
 <?php echo $this->hyperlink($this->translate('Advanced item search'), $this->url(null, ['action' => 'advanced', 'class' => 'advanced-search'], ['query' => $this->params()->fromQuery()], true), ['class' => 'advanced-search']); ?>
 
-<h2><?php echo $this->translate('Item results'); ?></h2>
+<h2><?php echo sprintf($this->translate('Item results for "%s"'), $fulltextSearch); ?></h2>
 
 <?php echo $this->pagination(); ?>
 
@@ -16,7 +21,7 @@
         <?php foreach ($items as $item): ?>
         <?php $sites = $item->sites(); ?>
         <li>
-            <?php echo $item->displayTitle(); ?>
+            <span class="item-title"><?php echo $item->displayTitle(); ?></span>
             <ul>
                 <?php foreach ($sites as $site): ?>
                 <li><?php echo $this->hyperlink($site->title(), $item->siteUrl($site->slug())); ?></li>

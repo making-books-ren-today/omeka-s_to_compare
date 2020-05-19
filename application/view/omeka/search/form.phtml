@@ -5,5 +5,5 @@ if (!isset($action)) {
 ?>
 <form action="<?php echo $action?>" class="sitewide-search-form">
     <input type="text" name="fulltext_search" value="<?php echo $this->escapeHtml($fulltextSearch); ?>">
-    <input type="submit" value="Search">
+    <input type="submit" value="<?php echo ($submitLabel) ? $submitLabel : $this->translate('Search'); ?>">
 </form>
